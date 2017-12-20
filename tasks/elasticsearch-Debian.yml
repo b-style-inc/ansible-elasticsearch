@@ -27,6 +27,11 @@
   include: elasticsearch-Debian-version-lock.yml
   when: es_version_lock
 
+- name: Debian - Ensure python-jmespath is installed
+  become: yes
+  apt: name=python-jmespath
+  when: es_use_repository
+
 - name: Debian - Ensure elasticsearch is installed
   become: yes
   apt: name=elasticsearch{% if es_version is defined and es_version != "" %}={{ es_version }}{% endif %} state=present force={{force_install}} allow_unauthenticated={{ 'no' if es_apt_key else 'yes' }} cache_valid_time=86400

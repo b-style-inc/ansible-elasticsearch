@@ -14,6 +14,7 @@
   become: yes
   apt: update_cache=yes
   changed_when: false
+  ignore_errors: yes
   when: ansible_os_family == 'Debian'
 
 - name: Debian - Ensure Java is installed
