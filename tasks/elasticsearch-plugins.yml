@@ -67,6 +67,38 @@
   retries: 5
   delay: 5
 
+# sudachiダウンロード
+#- name: Download sudachi
+#  become: yes
+#  command: "{{es_home}}/bin/elasticsearch-plugin install {{ item.plugin }} --batch --silent"
+
+# sudachiインストール
+#- name: Install sudachi
+#  become: yes
+#  command: "{{es_home}}/bin/elasticsearch-plugin install file:///usr/share/elasticsearch/ --silent"
+#  register: plugin_installed_sudachi
+#  failed_when: "'ERROR' in plugin_installed_sudachi.stdout"
+#  changed_when: plugin_installed_sudachi.rc == 0
+#  notify: sudachi installed
+#  environment:
+#    CONF_DIR: "{{ conf_dir }}"
+#    ES_PATH_CONF: "{{ conf_dir }}"
+#    ES_INCLUDE: "{{ instance_default_file }}"
+#    ES_JAVA_OPTS: "{% if item.proxy_host is defined and item.proxy_host != '' and item.proxy_port is defined and item.proxy_port != ''%} -Dhttp.proxyHost={{ item.proxy_host }} -Dhttp.proxyPort={{ item.proxy_port }} -Dhttps.proxyHost={{ item.proxy_host }} -Dhttps.proxyPort={{ item.proxy_port }}  {% elif es_proxy_host is defined and es_proxy_host != '' %} -Dhttp.proxyHost={{ es_proxy_host }} -Dhttp.proxyPort={{ es_proxy_port }} -Dhttps.proxyHost={{ es_proxy_host }} -Dhttps.proxyPort={{ es_proxy_port }} {% endif %}"
+#  until: plugin_installed_sudachi.rc == 0
+#  retries: 5
+#  delay: 5
+
+# sudachiインストール
+#- name: Install sudachi
+#  become: yes
+#  command: "{{es_home}}/bin/elasticsearch-plugin install file:///home/ubuntu/elasticsearch-sudachi/target/releases/analysis-sudachi-1.0.0-SNAPSHOT.zip --silent"
+#  environment:
+#    CONF_DIR: "{{ conf_dir }}"
+#    ES_PATH_CONF: "{{ conf_dir }}"
+#    ES_INCLUDE: "{{ instance_default_file }}"
+#    ES_JAVA_OPTS: "{% if item.proxy_host is defined and item.proxy_host != '' and item.proxy_port is defined and item.proxy_port != ''%} -Dhttp.proxyHost={{ item.proxy_host }} -Dhttp.proxyPort={{ item.proxy_port }} -Dhttps.proxyHost={{ item.proxy_host }} -Dhttps.proxyPort={{ item.proxy_port }}  {% elif es_proxy_host is defined and es_proxy_host != '' %} -Dhttp.proxyHost={{ es_proxy_host }} -Dhttp.proxyPort={{ es_proxy_port }} -Dhttps.proxyHost={{ es_proxy_host }} -Dhttps.proxyPort={{ es_proxy_port }} {% endif %}"
+
 #Set permissions on plugins directory
 - name: Set Plugin Directory Permissions
   become: yes
