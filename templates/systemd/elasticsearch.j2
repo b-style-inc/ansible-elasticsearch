@@ -7,7 +7,6 @@ After=network-online.target
 [Service]
 Environment=ES_HOME={{es_home}}
 Environment=CONF_DIR={{conf_dir}}
-Environment=ES_PATH_CONF={{conf_dir}}
 Environment=DATA_DIR={{ data_dirs | array_to_str }}
 Environment=LOG_DIR={{log_dir}}
 Environment=PID_DIR={{pid_dir}}
@@ -18,18 +17,14 @@ WorkingDirectory={{es_home}}
 User={{es_user}}
 Group={{es_group}}
 
-{% if (es_version | version_compare('6.0.0', '<')) %}
 ExecStartPre=/usr/share/elasticsearch/bin/elasticsearch-systemd-pre-exec
-{% endif %}
 
 ExecStart={{es_home}}/bin/elasticsearch \
                                     -p ${PID_DIR}/elasticsearch.pid \
-{% if (es_version | version_compare('6.0.0', '<')) %}
+                                    --quiet \
                                     -Edefault.path.logs=${LOG_DIR} \
                                     -Edefault.path.data=${DATA_DIR} \
-                                    -Edefault.path.conf=${CONF_DIR} \
-{% endif %}
-                                    --quiet
+                                    -Edefault.path.conf=${CONF_DIR}
 
 
 # StandardOutput is configured to redirect to journalctl since
@@ -45,6 +40,9 @@ StandardError=inherit
 {% if es_max_open_files is defined %}
 LimitNOFILE={{es_max_open_files}}
 {% endif %}
+
+# Specifies the maximum number of processes
+LimitNPROC=2048
 
 # Specifies the maximum number of bytes of memory that may be locked into RAM
 # Set to "infinity" if you use the 'bootstrap.memory_lock: true' option
